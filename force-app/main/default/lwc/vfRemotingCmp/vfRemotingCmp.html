@@ -1,0 +1,67 @@
+<template>
+    <lightning-card title="Component to Query Large Amount of Data" icon-name="custom:custom9">
+        <lightning-layout multiple-rows>
+            
+            <lightning-layout-item size="6" padding="around-small">
+            
+                <lightning-input label="Search" onchange={handleSearchChange}></lightning-input>
+   
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="6" padding="around-small">
+                <div class="slds-m-around_medium">
+                    <lightning-button label="Search records" variant="brand" onclick={handleFiretoVF}></lightning-button>
+                </div>
+ 
+            </lightning-layout-item>
+
+            <template if:true={displayBanner}>
+
+                <lightning-layout-item size="12" padding="around-small">
+              <p class="slds-text-heading_medium slds-text-color_success">
+                Your search returned {length} records.
+              </p>
+                
+   
+                </lightning-layout-item>
+                
+                <lightning-layout-item size="6" padding="around-small">
+                    <template if:true={countLessthan10}>
+                        <div class="slds-m-around_medium">
+                            <lightning-button label="Update Records" variant="brand" onclick={updateAccountsSync}></lightning-button>
+                        </div>
+
+                    </template>
+                    <template if:false={countLessthan10}>
+                        <div class="slds-m-around_medium">
+                            <lightning-button label="Schedule Batch" variant="brand" onclick={updateAccountsASync}></lightning-button>
+                        </div>
+
+                    </template>
+     
+                </lightning-layout-item>
+
+            </template>
+                
+            
+            
+ 
+            <lightning-layout-item size="12" padding="around-small">
+               
+                <iframe height="400px" width="100%" src="/apex/vfPage" style="display:none;"></iframe>
+            </lightning-layout-item>
+ 
+        </lightning-layout>
+
+
+    </lightning-card>
+    <template if:true={isLoading}>
+        <div>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </div>
+    </template>
+    
+   
+    
+   
+</template>

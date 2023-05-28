@@ -1,0 +1,34 @@
+<apex:page lightningStylesheets="true" controller="vfCmpController">
+    <apex:slds />
+    <script>
+    // Obtaining LEX origin URL from Apex to fire to parent & match the source upon receiving message
+    var lexOrigin = '{!lexOrigin}';
+    
+    /*** EventListener to GET response from LWC  ***/
+    window.addEventListener("message", function (event) {
+        if (event.origin === lexOrigin) {
+            console.log('VF');
+            console.log(event.data);
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.vfCmpController.getAccounts}',event.data,
+                function(result,event){
+                    if(event.status){
+                        if(result.length > 0)
+                        {
+                            window.parent.postMessage(result, lexOrigin);
+                        }
+                        else{
+                            
+                        }
+                    }
+                },{escape:false});
+        }
+    });
+    
+    /*** Method to Fire Event to LWC ***/
+    function firetoLWC() {
+        var message = document.getElementById('vfMessage').value;
+        window.parent.postMessage(message, lexOrigin);
+    }
+    </script>
+</apex:page>
